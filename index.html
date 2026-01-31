@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>For Shahzeb Mohammed ❤️</title>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <style>
         :root {
             --pink: #ff4d6d;
@@ -19,12 +20,12 @@
             align-items: center;
             min-height: 100vh;
             background-color: var(--light-pink);
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Segoe UI', sans-serif;
             overflow: hidden;
             text-align: center;
+            transition: background-color 1s ease;
         }
 
-        /* Floating Hearts Animation */
         .heart-bg {
             position: absolute;
             top: -10%;
@@ -50,8 +51,8 @@
             z-index: 10;
         }
 
-        h1 { color: var(--dark-pink); font-size: 1.8rem; margin-bottom: 10px; }
-        p { color: #444; line-height: 1.5; }
+        h1 { color: var(--dark-pink); font-size: 1.8rem; margin: 10px 0; }
+        p { color: #444; line-height: 1.5; margin: 5px 0; }
         
         .main-heart {
             font-size: 80px;
@@ -82,11 +83,13 @@
             border: none;
             border-radius: 50px;
             cursor: pointer;
-            transition: all 0.3s;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
         .primary-btn { background-color: #ff4d6d; color: white; box-shadow: 0 4px 15px rgba(255, 77, 109, 0.4); }
-        #noBtn { background-color: #eee; color: #777; position: absolute; left: 55%; }
+        .primary-btn:hover { transform: scale(1.05); }
+        
+        #noBtn { background-color: #eee; color: #777; position: absolute; left: 55%; z-index: 100; }
 
         .hidden { display: none; }
         
@@ -105,6 +108,12 @@
             color: var(--dark-pink);
             border: 2px solid var(--light-pink);
             font-weight: bold;
+            animation: popIn 0.5s ease forwards;
+        }
+
+        @keyframes popIn {
+            from { transform: scale(0); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
         }
     </style>
 </head>
@@ -114,7 +123,7 @@
         <div id="proposalSection">
             <span class="main-heart">❤️</span>
             <h1>Shahzeb Mohammed...</h1>
-            <p>"My heart is, and always will be, yours."</p>
+            <p>"Simple straightforward question , no twists "</p>
             <p><strong>Will you be my Valentine?</strong></p>
             <div class="btn-group">
                 <button id="yesBtn" class="primary-btn">YES</button>
@@ -124,9 +133,9 @@
 
         <div id="winSection" class="hidden">
             <span class="main-heart">✨</span>
-            <h1>Wooww! 😍</h1>
-            <p>You just won a date with me!</p>
-            <p><em>(And you definitely owe me one now...)</em></p>
+            <h1>Wooww!Babyyyy 😍</h1>
+            <p>Love you , You just won a date with me!</p>
+            <p><em>And now you are officially owing me one now..., so whats the plan CHEPPPUUUUUU, im excitedddd</em></p>
             <button id="claimBtn" class="primary-btn" style="margin-top:20px;">Claim Your Prizes 🎁</button>
         </div>
 
@@ -134,19 +143,19 @@
             <span class="main-heart">🍱</span>
             <h1>Your Rewards, Shahzeb!</h1>
             <div class="gift-container">
-                <div class="gift">🍛 1x Mandi Date</div>
-                <div class="gift">🌯 1x Shawarma Feast</div>
-                <div class="gift">☕ 1x Coffee Date</div>
-                <div class="gift">🤝 1x "Anytime Help" Pass</div>
-                <div class="gift">🫂 Unlimited Hugs</div>
-                <div class="gift">🛡️ Anti-Argument Shield</div>
+                <div class="gift">🍛 1x Mandiiii Date</div>
+                <div class="gift">🌯 1x Shawarmaaaa Feast</div>
+                <div class="gift">☕ 1x Coffeee Date</div>
+                <div class="gift">🤝 1x "Anytime Call / Help" Pass</div>
+                <div class="gift">🫂 Unlimited Hugs and kisses </div>
+                <div class="gift">🛡️ Anti-Argument Shield/ winning card </div>
             </div>
             <p style="margin-top: 25px; font-size: 0.8rem; color: #888;">Built with love by Prasamita</p>
         </div>
     </div>
 
     <script>
-        // Floating hearts effect
+        // Floating hearts
         function createHeart() {
             const heart = document.createElement('div');
             heart.classList.add('heart-bg');
@@ -161,26 +170,23 @@
         const noBtn = document.getElementById('noBtn');
         const yesBtn = document.getElementById('yesBtn');
         const claimBtn = document.getElementById('claimBtn');
-        
         const proposalSection = document.getElementById('proposalSection');
         const winSection = document.getElementById('winSection');
         const giftSection = document.getElementById('giftSection');
 
         let noClickCount = 0;
 
-        // "No" button escaping logic
         function moveButton() {
             noClickCount++;
             const x = Math.random() * (window.innerWidth - noBtn.offsetWidth);
             const y = Math.random() * (window.innerHeight - noBtn.offsetHeight);
-            
             noBtn.style.position = 'fixed';
             noBtn.style.left = x + 'px';
             noBtn.style.top = y + 'px';
 
             if(noClickCount === 3) noBtn.innerText = "Are you sure?";
             if(noClickCount === 5) noBtn.innerText = "Shahzeb, please? 🥺";
-            if(noClickCount === 7) {
+            if(noClickCount >= 7) {
                 noBtn.innerText = "YES";
                 noBtn.style.backgroundColor = "#ff4d6d";
                 noBtn.style.color = "white";
@@ -192,16 +198,24 @@
         
         yesBtn.addEventListener('click', showWin);
         
-        claimBtn.addEventListener('click', () => {
-            winSection.classList.add('hidden');
-            giftSection.classList.remove('hidden');
-        });
-
         function showWin() {
             proposalSection.classList.add('hidden');
             winSection.classList.remove('hidden');
             document.body.style.backgroundColor = "#ff8fa3";
         }
+
+        claimBtn.addEventListener('click', () => {
+            // Confetti Blast!
+            confetti({
+                particleCount: 150,
+                spread: 70,
+                origin: { y: 0.6 },
+                colors: ['#ff4d6d', '#ffccd5', '#ffffff']
+            });
+            
+            winSection.classList.add('hidden');
+            giftSection.classList.remove('hidden');
+        });
     </script>
 </body>
 </html>
